@@ -1,0 +1,92 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "screen-ad-booking-app": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/apps/screen-ad-booking-app",
+      "sourceRoot": "projects/apps/screen-ad-booking-app/src",
+      "prefix": "sab",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/apps/screen-ad-booking-app/src/main.ts",
+            "tsConfig": "projects/apps/screen-ad-booking-app/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/apps/screen-ad-booking-app/public"
+              }
+            ],
+            "styles": [
+              "projects/apps/screen-ad-booking-app/src/styles.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "screen-ad-booking-app:build:production"
+            },
+            "development": {
+              "buildTarget": "screen-ad-booking-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "projects/apps/screen-ad-booking-app/proxy.conf.json"
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "include": [
+              "**/*.spec.ts",
+              "../../../libs/**/*.spec.ts"
+            ],
+            "coverageInclude": [
+              "projects/apps/screen-ad-booking-app/src/app/**/*.ts",
+              "projects/libs/**/src/lib/**/*.ts"
+            ],
+            "coverageThresholds": {
+              "statements": 100,
+              "branches": 100,
+              "functions": 100,
+              "lines": 100
+            }
+          }
+        }
+      }
+    }
+  }
+}
