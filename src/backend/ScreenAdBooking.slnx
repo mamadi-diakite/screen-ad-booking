@@ -9,5 +9,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/ScreenAdBooking.Api.IntegrationTests/ScreenAdBooking.Api.IntegrationTests.csproj" />
     <Project Path="tests/ScreenAdBooking.Application.Tests/ScreenAdBooking.Application.Tests.csproj" />
+    <Project Path="tests/ScreenAdBooking.Domain.Tests/ScreenAdBooking.Domain.Tests.csproj" />
+    <Project Path="tests/ScreenAdBooking.Infrastructure.Tests/ScreenAdBooking.Infrastructure.Tests.csproj" />
   </Folder>
 </Solution>
