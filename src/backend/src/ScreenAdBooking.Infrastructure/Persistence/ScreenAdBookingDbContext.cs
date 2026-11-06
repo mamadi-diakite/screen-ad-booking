@@ -17,6 +17,8 @@ public sealed class ScreenAdBookingDbContext(DbContextOptions<ScreenAdBookingDbC
 
     public DbSet<Venue> Venues => Set<Venue>();
 
+    public DbSet<CreditMovement> CreditMovements => Set<CreditMovement>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ScreenAdBookingDbContext).Assembly);
 

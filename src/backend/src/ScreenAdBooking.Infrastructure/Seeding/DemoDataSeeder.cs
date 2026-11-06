@@ -11,10 +11,11 @@ public sealed class DemoDataSeeder(ScreenAdBookingDbContext db, IPasswordHasher 
     public const string AgencyAdminEmail = "nora.vidal@example.com";
 
     /// <summary>Fictional advertisers, each in its own company. All names are made up.</summary>
-    public static IReadOnlyList<(string Email, string DisplayName, string CompanyName, string Sector)> Advertisers { get; } =
+    /// <remarks>Each company starts with one free top-up of the given credit pack.</remarks>
+    public static IReadOnlyList<(string Email, string DisplayName, string CompanyName, string Sector, string PackCode)> Advertisers { get; } =
     [
-        ("paul.mercier@example.com", "Paul Mercier", "Lumen Bakery", "Food and drink"),
-        ("lina.chevalier@example.com", "Lina Chevalier", "Urban Cycle Shop", "Sports retail"),
+        ("paul.mercier@example.com", "Paul Mercier", "Lumen Bakery", "Food and drink", "standard"),
+        ("lina.chevalier@example.com", "Lina Chevalier", "Urban Cycle Shop", "Sports retail", "starter"),
     ];
 
     /// <summary>Seeds the demo accounts and the <see cref="DemoNetwork"/>.</summary>
@@ -37,6 +38,10 @@ public sealed class DemoDataSeeder(ScreenAdBookingDbContext db, IPasswordHasher 
             db.Companies.Add(company);
             db.Users.Add(new User(
                 advertiser.Email, advertiser.DisplayName, passwordHash, UserRole.Advertiser, company.Id, now));
+
+            var pack = CreditPacks.Find(advertiser.PackCode)!;
+            db.CreditMovements.Add(new CreditMovement(
+                company.Id, CreditMovementType.TopUp, pack.Credits, $"{pack.Name} pack top-up", now));
         }
 
         AddNetwork(now);

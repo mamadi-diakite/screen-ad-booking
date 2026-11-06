@@ -2,6 +2,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ScreenAdBooking.Application.Credits;
 using ScreenAdBooking.Application.Network;
 using ScreenAdBooking.Application.Security;
 using ScreenAdBooking.Application.Users;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordHasher, IdentityPasswordHasher>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<INetworkQueries, NetworkQueries>();
+        services.AddScoped<ICreditRepository, CreditRepository>();
         services.AddScoped<DemoDataSeeder>();
 
         return services;

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ScreenAdBooking.Application.Auth;
+using ScreenAdBooking.Application.Credits;
 using ScreenAdBooking.Application.Network;
 using ScreenAdBooking.Application.Security;
 using ScreenAdBooking.Application.Users;
@@ -17,12 +18,14 @@ public sealed class ApplicationDependencyInjectionTests
             .AddSingleton<IUserRepository, InMemoryUserRepository>()
             .AddSingleton<IPasswordHasher, FakePasswordHasher>()
             .AddSingleton<IAccessTokenIssuer, FakeTokenIssuer>()
-            .AddSingleton<INetworkQueries, FakeNetworkQueries>();
+            .AddSingleton<INetworkQueries, FakeNetworkQueries>()
+            .AddSingleton<ICreditRepository, InMemoryCreditRepository>();
 
         using var provider = services.BuildServiceProvider();
         using var scope = provider.CreateScope();
 
         Assert.NotNull(scope.ServiceProvider.GetService<AuthService>());
         Assert.NotNull(scope.ServiceProvider.GetService<VenueSearchService>());
+        Assert.NotNull(scope.ServiceProvider.GetService<CreditService>());
     }
 }

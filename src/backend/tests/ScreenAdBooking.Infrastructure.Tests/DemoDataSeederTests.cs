@@ -35,6 +35,21 @@ public sealed class DemoDataSeederTests : IDisposable
     }
 
     [Fact]
+    public async Task Each_demo_company_starts_with_one_free_top_up()
+    {
+        await SeedAsync();
+
+        await using var db = _database.CreateContext();
+        var movements = await db.CreditMovements.ToListAsync();
+        var companies = await db.Companies.ToDictionaryAsync(c => c.Id, c => c.Name);
+
+        Assert.Equal(
+            [("Lumen Bakery", 2000), ("Urban Cycle Shop", 500)],
+            movements.Select(m => (companies[m.CompanyId], m.Credits)).Order());
+        Assert.All(movements, m => Assert.Equal(CreditMovementType.TopUp, m.Type));
+    }
+
+    [Fact]
     public async Task Every_demo_account_accepts_the_demo_password()
     {
         await SeedAsync();

@@ -1,5 +1,6 @@
 using ScreenAdBooking.Application.Auth;
 using ScreenAdBooking.Application.Contracts.Network;
+using ScreenAdBooking.Application.Credits;
 using ScreenAdBooking.Application.Network;
 using ScreenAdBooking.Application.Security;
 using ScreenAdBooking.Application.Users;
@@ -56,6 +57,25 @@ internal sealed class FakeTokenIssuer : IAccessTokenIssuer
 internal sealed class FixedTimeProvider(DateTimeOffset now) : TimeProvider
 {
     public override DateTimeOffset GetUtcNow() => now;
+}
+
+internal sealed class InMemoryCreditRepository : ICreditRepository
+{
+    public List<CreditMovement> Movements { get; } = [];
+
+    public int SaveCount { get; private set; }
+
+    public Task<IReadOnlyList<CreditMovement>> ListAsync(Guid companyId, CancellationToken cancellationToken) =>
+        Task.FromResult<IReadOnlyList<CreditMovement>>(
+            [.. Movements.Where(m => m.CompanyId == companyId).OrderByDescending(m => m.CreatedAtUtc)]);
+
+    public void Add(CreditMovement movement) => Movements.Add(movement);
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        SaveCount++;
+        return Task.CompletedTask;
+    }
 }
 
 internal sealed class FakeNetworkQueries : INetworkQueries
