@@ -17,6 +17,7 @@ public sealed class DemoDataSeeder(ScreenAdBookingDbContext db, IPasswordHasher 
         ("lina.chevalier@example.com", "Lina Chevalier", "Urban Cycle Shop", "Sports retail"),
     ];
 
+    /// <summary>Seeds the demo accounts and the <see cref="DemoNetwork"/>.</summary>
     /// <returns><c>false</c> when the database already holds users.</returns>
     public async Task<bool> SeedAsync(CancellationToken cancellationToken = default)
     {
@@ -38,8 +39,48 @@ public sealed class DemoDataSeeder(ScreenAdBookingDbContext db, IPasswordHasher 
                 advertiser.Email, advertiser.DisplayName, passwordHash, UserRole.Advertiser, company.Id, now));
         }
 
+        AddNetwork(now);
         await db.SaveChangesAsync(cancellationToken);
 
         return true;
+    }
+
+    private void AddNetwork(DateTime now)
+    {
+        var countries = DemoNetwork.Countries.ToDictionary(c => c.Code, c => new Country(c.Code, c.Name));
+        db.Countries.AddRange(countries.Values);
+
+        var regions = new Dictionary<string, Region>();
+        var cities = new Dictionary<string, City>();
+        foreach (var demoCity in DemoNetwork.Cities)
+        {
+            if (!regions.TryGetValue(demoCity.Region, out var region))
+            {
+                region = new Region(countries[demoCity.CountryCode].Id, demoCity.Region);
+                regions.Add(demoCity.Region, region);
+                db.Regions.Add(region);
+            }
+
+            var city = new City(region.Id, demoCity.Name, demoCity.Latitude, demoCity.Longitude);
+            cities.Add(demoCity.Name, city);
+            db.Cities.Add(city);
+        }
+
+        foreach (var venue in DemoNetwork.Venues)
+        {
+            var city = cities[venue.City];
+            db.Venues.Add(new Venue(
+                city.Id,
+                venue.Name,
+                venue.Type,
+                venue.Footfall,
+                venue.LocationType,
+                venue.Address,
+                city.Latitude + venue.LatitudeOffset,
+                city.Longitude + venue.LongitudeOffset,
+                venue.ScreenCount,
+                venue.AverageAudience,
+                now));
+        }
     }
 }

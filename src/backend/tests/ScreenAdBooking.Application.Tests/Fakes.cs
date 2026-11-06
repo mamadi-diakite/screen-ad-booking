@@ -1,4 +1,6 @@
 using ScreenAdBooking.Application.Auth;
+using ScreenAdBooking.Application.Contracts.Network;
+using ScreenAdBooking.Application.Network;
 using ScreenAdBooking.Application.Security;
 using ScreenAdBooking.Application.Users;
 using ScreenAdBooking.Domain;
@@ -54,4 +56,27 @@ internal sealed class FakeTokenIssuer : IAccessTokenIssuer
 internal sealed class FixedTimeProvider(DateTimeOffset now) : TimeProvider
 {
     public override DateTimeOffset GetUtcNow() => now;
+}
+
+internal sealed class FakeNetworkQueries : INetworkQueries
+{
+    public IReadOnlyList<NetworkCountry> Locations { get; set; } = [];
+
+    public IReadOnlyList<VenueSummary> Venues { get; set; } = [];
+
+    public (VenueFilter Filter, int Skip, int Take)? LastSearch { get; private set; }
+
+    public Task<IReadOnlyList<NetworkCountry>> GetLocationsAsync(CancellationToken cancellationToken) =>
+        Task.FromResult(Locations);
+
+    public Task<(IReadOnlyList<VenueSummary> Items, int TotalCount)> SearchVenuesAsync(
+        VenueFilter filter,
+        int skip,
+        int take,
+        CancellationToken cancellationToken)
+    {
+        LastSearch = (filter, skip, take);
+
+        return Task.FromResult<(IReadOnlyList<VenueSummary>, int)>(([.. Venues.Skip(skip).Take(take)], Venues.Count));
+    }
 }

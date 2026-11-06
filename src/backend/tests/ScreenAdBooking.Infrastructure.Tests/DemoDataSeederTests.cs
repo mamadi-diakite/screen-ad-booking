@@ -47,6 +47,29 @@ public sealed class DemoDataSeederTests : IDisposable
     }
 
     [Fact]
+    public async Task Seeds_the_demo_network_in_france_and_belgium()
+    {
+        await SeedAsync();
+
+        await using var db = _database.CreateContext();
+        var venues = await db.Venues.Include(v => v.City!).ThenInclude(c => c.Region!).ThenInclude(r => r.Country).ToListAsync();
+
+        Assert.Equal(["BE", "FR"], (await db.Countries.Select(c => c.Code).ToListAsync()).Order());
+        Assert.Equal(DemoNetwork.Cities.Count, await db.Cities.CountAsync());
+        Assert.Equal(DemoNetwork.Venues.Count, venues.Count);
+        foreach (var country in new[] { "FR", "BE" })
+        {
+            var inCountry = venues.Where(v => v.City!.Region!.Country!.Code == country).ToList();
+            Assert.True(inCountry.Select(v => v.City!.RegionId).Distinct().Count() >= 3, country);
+            Assert.True(inCountry.Select(v => v.CityId).Distinct().Count() >= 5, country);
+        }
+
+        Assert.All(venues, v => Assert.InRange(Math.Abs(v.Latitude - v.City!.Latitude), 0, 0.05));
+        Assert.All(venues, v => Assert.Equal(Now, v.CreatedAtUtc));
+        Assert.Equal(Enum.GetValues<VenueType>(), venues.Select(v => v.Type).Distinct().Order());
+    }
+
+    [Fact]
     public async Task Second_run_adds_nothing()
     {
         await SeedAsync();
@@ -56,6 +79,7 @@ public sealed class DemoDataSeederTests : IDisposable
         await using var db = _database.CreateContext();
         Assert.Equal(3, await db.Users.CountAsync());
         Assert.Equal(2, await db.Companies.CountAsync());
+        Assert.Equal(DemoNetwork.Venues.Count, await db.Venues.CountAsync());
     }
 
     [Fact]
