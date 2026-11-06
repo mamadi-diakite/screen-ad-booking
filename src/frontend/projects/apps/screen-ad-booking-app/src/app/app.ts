@@ -11,6 +11,11 @@ import { Shell } from '@screen-ad-booking/shared/ui';
     <sab-shell appName="Screen Ad Booking" [apiStatus]="apiStatus()">
       <ng-container shellNav>
         @if (user(); as user) {
+          <a routerLink="/venues" class="text-violet-600">Venues</a>
+          @if (user.role === 'Advertiser') {
+            <a routerLink="/videos" class="text-violet-600">Videos</a>
+            <a routerLink="/credits" class="text-violet-600">Credits</a>
+          }
           <span class="text-slate-600" data-testid="user-name">{{ user.displayName }}</span>
           <a routerLink="/account/password" class="text-violet-600">Change password</a>
           <button type="button" class="text-violet-600" (click)="logOut()">Log out</button>

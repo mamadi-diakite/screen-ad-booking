@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { authGuard, guestGuard, safeReturnUrl } from './auth.guards';
+import { advertiserGuard, authGuard, guestGuard, safeReturnUrl } from './auth.guards';
 import { SessionStore } from './session.store';
 
 describe('auth guards', () => {
@@ -18,7 +18,7 @@ describe('auth guards', () => {
     TestBed.configureTestingModule({ providers: [provideRouter([])] });
   });
 
-  function signIn(): void {
+  function signIn(role = 'Advertiser'): void {
     TestBed.inject(SessionStore).start({
       accessToken: 'token-1',
       expiresAtUtc: '2999-01-01T00:00:00Z',
@@ -26,8 +26,8 @@ describe('auth guards', () => {
         id: 'user-1',
         email: 'paul.mercier@example.com',
         displayName: 'Paul Mercier',
-        role: 'Advertiser',
-        companyId: 'company-1',
+        role,
+        companyId: role === 'Advertiser' ? 'company-1' : null,
       },
     });
   }
@@ -46,6 +46,21 @@ describe('auth guards', () => {
     signIn();
 
     expect(TestBed.runInInjectionContext(() => authGuard(route, state))).toBe(true);
+  });
+
+  it('keeps the company pages for signed-in advertisers', () => {
+    const credits = { url: '/credits' } as RouterStateSnapshot;
+    expect(serialize(TestBed.runInInjectionContext(() => advertiserGuard(route, credits)))).toBe(
+      '/login?returnUrl=%2Fcredits',
+    );
+
+    signIn();
+    expect(TestBed.runInInjectionContext(() => advertiserGuard(route, credits))).toBe(true);
+
+    signIn('AgencyAdmin');
+    expect(serialize(TestBed.runInInjectionContext(() => advertiserGuard(route, credits)))).toBe(
+      '/',
+    );
   });
 
   it('lets visitors open the login page', () => {

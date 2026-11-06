@@ -42,6 +42,19 @@ export class AppHarness {
     TestBed.inject(SessionStore).start(demoSession);
   }
 
+  signInAsAgencyAdmin(): void {
+    TestBed.inject(SessionStore).start({
+      ...demoSession,
+      user: {
+        id: 'user-2',
+        email: 'nora.vidal@example.com',
+        displayName: 'Nora Vidal',
+        role: 'AgencyAdmin',
+        companyId: null,
+      },
+    });
+  }
+
   async open(url: string): Promise<void> {
     await this.router.navigateByUrl(url);
     await this.fixture.whenStable();
@@ -52,6 +65,26 @@ export class AppHarness {
     input.value = value;
     input.dispatchEvent(new Event('input'));
     input.dispatchEvent(new Event('blur'));
+    await this.fixture.whenStable();
+  }
+
+  /** Picks files in a file input as the browser dialog would. */
+  async choose(id: string, ...files: File[]): Promise<void> {
+    const input = this.element.querySelector<HTMLInputElement>(`#${id}`)!;
+    Object.defineProperty(input, 'files', { value: files, configurable: true });
+    input.dispatchEvent(new Event('change'));
+    await this.fixture.whenStable();
+  }
+
+  async select(id: string, value: string): Promise<void> {
+    const select = this.element.querySelector<HTMLSelectElement>(`#${id}`)!;
+    select.value = value;
+    select.dispatchEvent(new Event('change'));
+    await this.fixture.whenStable();
+  }
+
+  async click(selector: string): Promise<void> {
+    this.element.querySelector<HTMLElement>(selector)!.click();
     await this.fixture.whenStable();
   }
 

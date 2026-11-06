@@ -26,13 +26,21 @@ describe('App', () => {
     await app.open('/');
 
     expect(app.text('[data-testid="user-name"]')).toBe('Paul Mercier');
-    expect(app.texts('header nav a')).toEqual(['Change password']);
+    expect(app.texts('header nav a')).toEqual(['Venues', 'Videos', 'Credits', 'Change password']);
 
     app.button('header nav button').click();
     await app.settle();
 
     expect(app.router.url).toBe('/login');
     expect(app.texts('header nav a')).toEqual(['Log in', 'Create an account']);
+  });
+
+  it('keeps the company pages out of the agency admin menu', async () => {
+    app.signInAsAgencyAdmin();
+    await app.open('/credits');
+
+    expect(app.router.url).toBe('/');
+    expect(app.texts('header nav a')).toEqual(['Venues', 'Change password']);
   });
 
   it('sends unknown addresses back home', async () => {
