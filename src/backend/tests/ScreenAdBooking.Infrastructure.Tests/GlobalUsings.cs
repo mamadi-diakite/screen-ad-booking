@@ -1,0 +1,11 @@
+global using Microsoft.Data.Sqlite;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using ScreenAdBooking.Application.Network;
+global using ScreenAdBooking.Application.Videos;
+global using ScreenAdBooking.Domain;
+global using ScreenAdBooking.Infrastructure.Persistence;
+global using ScreenAdBooking.Infrastructure.Security;
+global using ScreenAdBooking.Infrastructure.Seeding;
+global using ScreenAdBooking.Infrastructure.Storage;
+global using Xunit;

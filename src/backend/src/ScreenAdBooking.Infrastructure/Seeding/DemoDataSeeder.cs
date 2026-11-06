@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Application.Security;
-using ScreenAdBooking.Domain;
-using ScreenAdBooking.Infrastructure.Persistence;
-
 namespace ScreenAdBooking.Infrastructure.Seeding;
 
 public sealed class DemoDataSeeder(ScreenAdBookingDbContext db, IPasswordHasher passwordHasher, TimeProvider timeProvider)

@@ -1,6 +1,3 @@
-using System.Net;
-using System.Net.Http.Json;
-
 namespace ScreenAdBooking.Api.IntegrationTests;
 
 public sealed class HealthEndpointTests(ScreenAdBookingApiFactory factory) : IClassFixture<ScreenAdBookingApiFactory>

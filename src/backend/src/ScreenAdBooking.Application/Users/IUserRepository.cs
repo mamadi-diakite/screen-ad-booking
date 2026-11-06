@@ -1,5 +1,3 @@
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Users;
 
 public interface IUserRepository

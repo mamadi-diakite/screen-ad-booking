@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Domain;
-using ScreenAdBooking.Infrastructure.Security;
-using ScreenAdBooking.Infrastructure.Seeding;
-
 namespace ScreenAdBooking.Infrastructure.Tests;
 
 public sealed class DemoDataSeederTests : IDisposable

@@ -1,5 +1,3 @@
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Credits;
 
 public interface ICreditRepository

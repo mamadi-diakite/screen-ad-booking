@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Infrastructure.Persistence.Configurations;
 
 internal sealed class CreditMovementConfiguration : IEntityTypeConfiguration<CreditMovement>

@@ -1,6 +1,3 @@
-using ScreenAdBooking.Application.Contracts.Network;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Network;
 
 /// <param name="CountryCode">Upper-case ISO 3166-1 alpha-2 code.</param>

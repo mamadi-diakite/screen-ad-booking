@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-using ScreenAdBooking.Application.Security;
-
 namespace ScreenAdBooking.Infrastructure.Security;
 
 /// <summary>PBKDF2 hashing from ASP.NET Core Identity, without the rest of Identity.</summary>

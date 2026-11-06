@@ -1,5 +1,3 @@
-using ScreenAdBooking.Application.Auth;
-
 namespace ScreenAdBooking.Application.Tests;
 
 public sealed class PasswordPolicyTests

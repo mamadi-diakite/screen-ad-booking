@@ -1,11 +1,3 @@
-using ScreenAdBooking.Application.Auth;
-using ScreenAdBooking.Application.Contracts.Network;
-using ScreenAdBooking.Application.Credits;
-using ScreenAdBooking.Application.Network;
-using ScreenAdBooking.Application.Security;
-using ScreenAdBooking.Application.Users;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Tests;
 
 internal sealed class InMemoryUserRepository : IUserRepository
@@ -75,6 +67,62 @@ internal sealed class InMemoryCreditRepository : ICreditRepository
     {
         SaveCount++;
         return Task.CompletedTask;
+    }
+}
+
+internal sealed class InMemoryVideoRepository : IVideoRepository
+{
+    public List<Video> Videos { get; } = [];
+
+    public int SaveCount { get; private set; }
+
+    public Task<IReadOnlyList<Video>> ListAsync(Guid companyId, CancellationToken cancellationToken) =>
+        Task.FromResult<IReadOnlyList<Video>>(
+            [.. Videos.Where(v => v.CompanyId == companyId).OrderByDescending(v => v.UploadedAtUtc)]);
+
+    public Task<Video?> FindAsync(Guid companyId, Guid videoId, CancellationToken cancellationToken) =>
+        Task.FromResult(Videos.SingleOrDefault(v => v.Id == videoId && v.CompanyId == companyId));
+
+    public void Add(Video video) => Videos.Add(video);
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        SaveCount++;
+        return Task.CompletedTask;
+    }
+}
+
+internal sealed class InMemoryVideoStorage : IVideoStorage
+{
+    public Dictionary<string, byte[]> Files { get; } = [];
+
+    public async Task SaveAsync(string fileName, Stream content, CancellationToken cancellationToken)
+    {
+        using var copy = new MemoryStream();
+        await content.CopyToAsync(copy, cancellationToken);
+        Files[fileName] = copy.ToArray();
+    }
+
+    public Stream? OpenRead(string fileName) =>
+        Files.TryGetValue(fileName, out var bytes) ? new MemoryStream(bytes, writable: false) : null;
+}
+
+/// <summary>Smallest headers that pass or fail the video type check.</summary>
+internal static class VideoBytes
+{
+    public static byte[] Mp4(int length = 64) => Padded([0, 0, 0, 0x18, .. "ftypisom"u8], length);
+
+    public static byte[] QuickTime() => Padded([0, 0, 0, 0x14, .. "ftypqt  "u8], 64);
+
+    public static byte[] WebM(int length = 64) => Padded([0x1A, 0x45, 0xDF, 0xA3, 0x9F, 0x42, 0x82, 0x84, .. "webm"u8], length);
+
+    public static byte[] Matroska() => Padded([0x1A, 0x45, 0xDF, 0xA3, 0x9F, 0x42, 0x82, 0x88, .. "matroska"u8], 64);
+
+    private static byte[] Padded(byte[] header, int length)
+    {
+        var bytes = new byte[Math.Max(length, header.Length)];
+        header.CopyTo(bytes, 0);
+        return bytes;
     }
 }
 

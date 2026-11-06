@@ -1,8 +1,3 @@
-using ScreenAdBooking.Application.Contracts.Auth;
-using ScreenAdBooking.Application.Security;
-using ScreenAdBooking.Application.Users;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Auth;
 
 public sealed class AuthService(

@@ -1,8 +1,3 @@
-using System.Security.Claims;
-using Microsoft.IdentityModel.JsonWebTokens;
-using ScreenAdBooking.Api.Auth;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Api.IntegrationTests;
 
 public sealed class JwtAccessTokenIssuerTests

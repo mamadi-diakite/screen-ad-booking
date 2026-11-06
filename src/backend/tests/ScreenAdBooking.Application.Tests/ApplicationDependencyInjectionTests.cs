@@ -1,10 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using ScreenAdBooking.Application.Auth;
-using ScreenAdBooking.Application.Credits;
-using ScreenAdBooking.Application.Network;
-using ScreenAdBooking.Application.Security;
-using ScreenAdBooking.Application.Users;
-
 namespace ScreenAdBooking.Application.Tests;
 
 public sealed class ApplicationDependencyInjectionTests
@@ -19,7 +12,9 @@ public sealed class ApplicationDependencyInjectionTests
             .AddSingleton<IPasswordHasher, FakePasswordHasher>()
             .AddSingleton<IAccessTokenIssuer, FakeTokenIssuer>()
             .AddSingleton<INetworkQueries, FakeNetworkQueries>()
-            .AddSingleton<ICreditRepository, InMemoryCreditRepository>();
+            .AddSingleton<ICreditRepository, InMemoryCreditRepository>()
+            .AddSingleton<IVideoRepository, InMemoryVideoRepository>()
+            .AddSingleton<IVideoStorage, InMemoryVideoStorage>();
 
         using var provider = services.BuildServiceProvider();
         using var scope = provider.CreateScope();
@@ -27,5 +22,6 @@ public sealed class ApplicationDependencyInjectionTests
         Assert.NotNull(scope.ServiceProvider.GetService<AuthService>());
         Assert.NotNull(scope.ServiceProvider.GetService<VenueSearchService>());
         Assert.NotNull(scope.ServiceProvider.GetService<CreditService>());
+        Assert.NotNull(scope.ServiceProvider.GetService<VideoService>());
     }
 }

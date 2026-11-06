@@ -1,22 +1,12 @@
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using ScreenAdBooking.Application.Credits;
-using ScreenAdBooking.Application.Network;
-using ScreenAdBooking.Application.Security;
-using ScreenAdBooking.Application.Users;
-using ScreenAdBooking.Infrastructure.Persistence;
-using ScreenAdBooking.Infrastructure.Security;
-using ScreenAdBooking.Infrastructure.Seeding;
-
 namespace ScreenAdBooking.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
+    /// <param name="videosPath">Folder for uploaded video files.</param>
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString, string videosPath)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(videosPath);
 
         services.AddDbContext<ScreenAdBookingDbContext>(options => options.UseSqlite(connectionString));
         services.TryAddSingleton(TimeProvider.System);
@@ -24,6 +14,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<INetworkQueries, NetworkQueries>();
         services.AddScoped<ICreditRepository, CreditRepository>();
+        services.AddScoped<IVideoRepository, VideoRepository>();
+        services.AddSingleton<IVideoStorage>(new FileSystemVideoStorage(videosPath));
         services.AddScoped<DemoDataSeeder>();
 
         return services;

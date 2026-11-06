@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using ScreenAdBooking.Api.Auth;
-using ScreenAdBooking.Application;
-using ScreenAdBooking.Application.Auth;
-using ScreenAdBooking.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var jwtSettings = JwtSettings.FromConfiguration(builder.Configuration, builder.Environment);
@@ -12,7 +6,11 @@ builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(
     builder.Configuration.GetConnectionString("Default")
-    ?? throw new InvalidOperationException("Connection string 'Default' is missing."));
+    ?? throw new InvalidOperationException("Connection string 'Default' is missing."),
+    Path.GetFullPath(
+        builder.Configuration["Storage:VideosPath"]
+        ?? throw new InvalidOperationException("Setting 'Storage:VideosPath' is missing."),
+        builder.Environment.ContentRootPath));
 
 builder.Services.AddSingleton(jwtSettings);
 builder.Services.AddSingleton<IAccessTokenIssuer, JwtAccessTokenIssuer>();

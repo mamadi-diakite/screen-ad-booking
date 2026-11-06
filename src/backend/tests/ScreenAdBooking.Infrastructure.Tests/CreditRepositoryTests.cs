@@ -1,6 +1,3 @@
-using ScreenAdBooking.Domain;
-using ScreenAdBooking.Infrastructure.Persistence;
-
 namespace ScreenAdBooking.Infrastructure.Tests;
 
 public sealed class CreditRepositoryTests : IDisposable

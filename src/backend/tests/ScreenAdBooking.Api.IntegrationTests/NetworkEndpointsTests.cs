@@ -1,10 +1,3 @@
-using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc;
-using ScreenAdBooking.Application.Contracts.Auth;
-using ScreenAdBooking.Application.Contracts.Network;
-
 namespace ScreenAdBooking.Api.IntegrationTests;
 
 public sealed class NetworkEndpointsTests(DemoDataApiFactory factory) : IClassFixture<DemoDataApiFactory>

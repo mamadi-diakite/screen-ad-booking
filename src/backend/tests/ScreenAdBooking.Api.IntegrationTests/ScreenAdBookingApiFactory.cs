@@ -1,17 +1,14 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.Sqlite;
-
 namespace ScreenAdBooking.Api.IntegrationTests;
 
-/// <summary>Runs the API against its own throwaway SQLite file.</summary>
+/// <summary>Runs the API against its own throwaway SQLite file and video folder.</summary>
 public class ScreenAdBookingApiFactory : WebApplicationFactory<Program>
 {
     public static readonly string TestSigningKey =
         Convert.ToBase64String(Enumerable.Range(1, 32).Select(i => (byte)i).ToArray());
 
-    private readonly string _databasePath =
-        Path.Combine(Path.GetTempPath(), "screen-ad-booking-tests", $"{Guid.NewGuid():N}.db");
+    private readonly string _root = Path.Combine(Path.GetTempPath(), "screen-ad-booking-tests", Guid.NewGuid().ToString("N"));
+
+    public string VideosPath => Path.Combine(_root, "videos");
 
     protected virtual string EnvironmentName => "Development";
 
@@ -20,10 +17,11 @@ public class ScreenAdBookingApiFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment(EnvironmentName);
-        builder.UseSetting("ConnectionStrings:Default", $"Data Source={_databasePath}");
+        builder.UseSetting("ConnectionStrings:Default", $"Data Source={Path.Combine(_root, "app.db")}");
         builder.UseSetting("Database:ApplyMigrationsOnStartup", "true");
         builder.UseSetting("Database:SeedDemoData", SeedDemoData.ToString());
         builder.UseSetting("Jwt:SigningKey", TestSigningKey);
+        builder.UseSetting("Storage:VideosPath", VideosPath);
     }
 
     protected override void Dispose(bool disposing)
@@ -31,7 +29,10 @@ public class ScreenAdBookingApiFactory : WebApplicationFactory<Program>
         base.Dispose(disposing);
 
         SqliteConnection.ClearAllPools();
-        File.Delete(_databasePath);
+        if (Directory.Exists(_root))
+        {
+            Directory.Delete(_root, recursive: true);
+        }
     }
 }
 

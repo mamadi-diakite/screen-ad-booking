@@ -1,8 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using ScreenAdBooking.Application.Auth;
-using ScreenAdBooking.Application.Credits;
-using ScreenAdBooking.Application.Network;
-
 namespace ScreenAdBooking.Application;
 
 public static class DependencyInjection
@@ -12,6 +7,7 @@ public static class DependencyInjection
         services.AddScoped<AuthService>();
         services.AddScoped<VenueSearchService>();
         services.AddScoped<CreditService>();
+        services.AddScoped<VideoService>();
 
         return services;
     }

@@ -1,7 +1,3 @@
-using ScreenAdBooking.Application.Auth;
-using ScreenAdBooking.Application.Contracts.Auth;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Tests;
 
 public sealed class AuthServiceTests

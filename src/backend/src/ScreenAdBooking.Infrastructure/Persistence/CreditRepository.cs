@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Application.Credits;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Infrastructure.Persistence;
 
 public sealed class CreditRepository(ScreenAdBookingDbContext db) : ICreditRepository

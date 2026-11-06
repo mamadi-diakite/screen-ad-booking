@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Application.Contracts.Network;
-using ScreenAdBooking.Application.Network;
-
 namespace ScreenAdBooking.Infrastructure.Persistence;
 
 public sealed class NetworkQueries(ScreenAdBookingDbContext db) : INetworkQueries

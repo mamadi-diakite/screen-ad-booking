@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Infrastructure.Persistence;
 
 public sealed class ScreenAdBookingDbContext(DbContextOptions<ScreenAdBookingDbContext> options) : DbContext(options)
@@ -18,6 +15,8 @@ public sealed class ScreenAdBookingDbContext(DbContextOptions<ScreenAdBookingDbC
     public DbSet<Venue> Venues => Set<Venue>();
 
     public DbSet<CreditMovement> CreditMovements => Set<CreditMovement>();
+
+    public DbSet<Video> Videos => Set<Video>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ScreenAdBookingDbContext).Assembly);

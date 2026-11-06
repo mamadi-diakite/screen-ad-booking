@@ -1,10 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Application.Network;
-using ScreenAdBooking.Domain;
-using ScreenAdBooking.Infrastructure.Persistence;
-using ScreenAdBooking.Infrastructure.Security;
-using ScreenAdBooking.Infrastructure.Seeding;
-
 namespace ScreenAdBooking.Infrastructure.Tests;
 
 public sealed class NetworkQueriesTests : IDisposable

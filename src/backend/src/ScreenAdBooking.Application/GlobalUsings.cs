@@ -1,0 +1,12 @@
+global using Microsoft.Extensions.DependencyInjection;
+global using ScreenAdBooking.Application.Auth;
+global using ScreenAdBooking.Application.Contracts.Auth;
+global using ScreenAdBooking.Application.Contracts.Credits;
+global using ScreenAdBooking.Application.Contracts.Network;
+global using ScreenAdBooking.Application.Contracts.Videos;
+global using ScreenAdBooking.Application.Credits;
+global using ScreenAdBooking.Application.Network;
+global using ScreenAdBooking.Application.Security;
+global using ScreenAdBooking.Application.Users;
+global using ScreenAdBooking.Application.Videos;
+global using ScreenAdBooking.Domain;

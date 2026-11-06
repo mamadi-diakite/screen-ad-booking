@@ -247,6 +247,47 @@ namespace ScreenAdBooking.Infrastructure.Persistence.Migrations
                     b.ToTable("Venues", (string)null);
                 });
 
+            modelBuilder.Entity("ScreenAdBooking.Domain.Video", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RejectionReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("SizeBytes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadedAtUtc")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId", "UploadedAtUtc");
+
+                    b.ToTable("Videos", (string)null);
+                });
+
             modelBuilder.Entity("ScreenAdBooking.Domain.City", b =>
                 {
                     b.HasOne("ScreenAdBooking.Domain.Region", "Region")
@@ -297,6 +338,15 @@ namespace ScreenAdBooking.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("ScreenAdBooking.Domain.Video", b =>
+                {
+                    b.HasOne("ScreenAdBooking.Domain.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

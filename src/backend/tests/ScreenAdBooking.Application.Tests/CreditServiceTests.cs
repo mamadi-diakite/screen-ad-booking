@@ -1,7 +1,3 @@
-using ScreenAdBooking.Application.Contracts.Credits;
-using ScreenAdBooking.Application.Credits;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Tests;
 
 public sealed class CreditServiceTests

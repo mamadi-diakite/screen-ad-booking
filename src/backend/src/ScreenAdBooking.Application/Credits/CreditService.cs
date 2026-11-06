@@ -1,7 +1,3 @@
-using ScreenAdBooking.Application.Contracts.Credits;
-using ScreenAdBooking.Application.Users;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Credits;
 
 public enum WalletStatus

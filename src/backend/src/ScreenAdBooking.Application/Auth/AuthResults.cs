@@ -1,5 +1,3 @@
-using ScreenAdBooking.Application.Contracts.Auth;
-
 namespace ScreenAdBooking.Application.Auth;
 
 public enum ChangePasswordStatus

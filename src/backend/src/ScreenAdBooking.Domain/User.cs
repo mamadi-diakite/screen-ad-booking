@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace ScreenAdBooking.Domain;
 
 public sealed class User

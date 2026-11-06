@@ -1,7 +1,3 @@
-using ScreenAdBooking.Application.Contracts.Network;
-using ScreenAdBooking.Application.Network;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Tests;
 
 public sealed class VenueSearchServiceTests

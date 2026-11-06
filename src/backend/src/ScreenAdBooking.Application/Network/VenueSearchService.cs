@@ -1,6 +1,3 @@
-using ScreenAdBooking.Application.Contracts.Network;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Network;
 
 public sealed class VenueSearchService(INetworkQueries queries)

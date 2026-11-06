@@ -1,5 +1,3 @@
-using ScreenAdBooking.Infrastructure.Security;
-
 namespace ScreenAdBooking.Infrastructure.Tests;
 
 public sealed class IdentityPasswordHasherTests

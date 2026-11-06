@@ -1,18 +1,28 @@
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ScreenAdBooking.Infrastructure.Persistence;
-
 namespace ScreenAdBooking.Infrastructure.Tests;
 
 public sealed class DependencyInjectionTests
 {
+    private static readonly string VideosPath = Path.Combine(Path.GetTempPath(), "screen-ad-booking-tests", "videos");
+
     [Theory]
-    [InlineData("")]
-    [InlineData("  ")]
-    public void Rejects_blank_connection_string(string connectionString)
+    [InlineData("", "videos")]
+    [InlineData("  ", "videos")]
+    [InlineData("Data Source=:memory:", "")]
+    [InlineData("Data Source=:memory:", "  ")]
+    public void Rejects_blank_connection_string_or_videos_path(string connectionString, string videosPath)
     {
-        Assert.Throws<ArgumentException>(() => new ServiceCollection().AddInfrastructure(connectionString));
+        Assert.Throws<ArgumentException>(() => new ServiceCollection().AddInfrastructure(connectionString, videosPath));
+    }
+
+    [Fact]
+    public void Registers_the_video_repository_and_file_storage()
+    {
+        using var provider = new ServiceCollection().AddInfrastructure("Data Source=:memory:", VideosPath).BuildServiceProvider();
+        using var scope = provider.CreateScope();
+
+        Assert.IsType<VideoRepository>(scope.ServiceProvider.GetRequiredService<IVideoRepository>());
+        var storage = Assert.IsType<FileSystemVideoStorage>(provider.GetRequiredService<IVideoStorage>());
+        Assert.Equal(VideosPath, storage.RootPath);
     }
 
     [Fact]
@@ -24,7 +34,7 @@ public sealed class DependencyInjectionTests
         try
         {
             await using var provider = new ServiceCollection()
-                .AddInfrastructure($"Data Source={databasePath}")
+                .AddInfrastructure($"Data Source={databasePath}", VideosPath)
                 .BuildServiceProvider();
 
             await provider.ApplyMigrationsAsync();
@@ -45,7 +55,7 @@ public sealed class DependencyInjectionTests
     public async Task Seeds_demo_data_once_through_the_service_provider()
     {
         await using var provider = new ServiceCollection()
-            .AddInfrastructure("Data Source=seed-test;Mode=Memory;Cache=Shared")
+            .AddInfrastructure("Data Source=seed-test;Mode=Memory;Cache=Shared", VideosPath)
             .BuildServiceProvider();
 
         // Keeps the shared in-memory database alive between scopes.
@@ -64,7 +74,7 @@ public sealed class DependencyInjectionTests
     public async Task Applies_migrations_to_in_memory_database_without_touching_disk(string connectionString)
     {
         await using var provider = new ServiceCollection()
-            .AddInfrastructure(connectionString)
+            .AddInfrastructure(connectionString, VideosPath)
             .BuildServiceProvider();
 
         await provider.ApplyMigrationsAsync();

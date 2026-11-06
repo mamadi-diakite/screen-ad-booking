@@ -1,5 +1,3 @@
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Application.Auth;
 
 public interface IAccessTokenIssuer

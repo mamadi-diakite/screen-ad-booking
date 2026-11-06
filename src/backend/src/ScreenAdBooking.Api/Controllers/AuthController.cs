@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using ScreenAdBooking.Api.Auth;
-using ScreenAdBooking.Application.Auth;
-using ScreenAdBooking.Application.Contracts.Auth;
-
 namespace ScreenAdBooking.Api.Controllers;
 
 [ApiController]

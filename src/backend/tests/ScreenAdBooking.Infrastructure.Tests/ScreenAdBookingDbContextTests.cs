@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Infrastructure.Tests;
 
 public sealed class ScreenAdBookingDbContextTests : IDisposable

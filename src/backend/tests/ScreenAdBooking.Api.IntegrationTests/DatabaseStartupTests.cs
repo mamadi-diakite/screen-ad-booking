@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ScreenAdBooking.Infrastructure.Persistence;
-
 namespace ScreenAdBooking.Api.IntegrationTests;
 
 public sealed class DatabaseStartupTests(ScreenAdBookingApiFactory factory) : IClassFixture<ScreenAdBookingApiFactory>

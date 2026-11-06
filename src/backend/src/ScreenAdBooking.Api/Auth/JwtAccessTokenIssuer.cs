@@ -1,8 +1,3 @@
-using Microsoft.IdentityModel.JsonWebTokens;
-using Microsoft.IdentityModel.Tokens;
-using ScreenAdBooking.Application.Auth;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Api.Auth;
 
 public sealed class JwtAccessTokenIssuer(JwtSettings settings, TimeProvider timeProvider) : IAccessTokenIssuer

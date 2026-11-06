@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using ScreenAdBooking.Application.Users;
-using ScreenAdBooking.Domain;
-
 namespace ScreenAdBooking.Infrastructure.Persistence;
 
 public sealed class UserRepository(ScreenAdBookingDbContext db) : IUserRepository

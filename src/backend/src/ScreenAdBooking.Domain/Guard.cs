@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace ScreenAdBooking.Domain;
 
 internal static class Guard
