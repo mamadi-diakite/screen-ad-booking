@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace ScreenAdBooking.Domain;
 
 public sealed class User
@@ -49,4 +51,9 @@ public sealed class User
     public Company? Company { get; private set; }
 
     public DateTime CreatedAtUtc { get; private set; }
+
+    public static bool IsValidEmail([NotNullWhen(true)] string? email) => Guard.IsEmail(email, EmailMaxLength);
+
+    public void ChangePassword(string passwordHash) =>
+        PasswordHash = Guard.Required(passwordHash, nameof(passwordHash), PasswordHashMaxLength);
 }
