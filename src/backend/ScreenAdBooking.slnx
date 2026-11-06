@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ScreenAdBooking.Api/ScreenAdBooking.Api.csproj" />
+    <Project Path="src/ScreenAdBooking.Application.Contracts/ScreenAdBooking.Application.Contracts.csproj" />
+    <Project Path="src/ScreenAdBooking.Application/ScreenAdBooking.Application.csproj" />
+    <Project Path="src/ScreenAdBooking.Domain/ScreenAdBooking.Domain.csproj" />
+    <Project Path="src/ScreenAdBooking.Infrastructure/ScreenAdBooking.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ScreenAdBooking.Api.IntegrationTests/ScreenAdBooking.Api.IntegrationTests.csproj" />
+    <Project Path="tests/ScreenAdBooking.Application.Tests/ScreenAdBooking.Application.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScreenAdBooking.Application.Contracts\ScreenAdBooking.Application.Contracts.csproj" />
+    <ProjectReference Include="..\ScreenAdBooking.Domain\ScreenAdBooking.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
